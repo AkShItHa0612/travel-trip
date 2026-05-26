@@ -2,7 +2,7 @@
   "name": "travel-trip",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://akshitha0612.github.io/travel-trip",
+  "homepage":".",
 
   "dependencies": {
     "@testing-library/dom": "^10.4.1",

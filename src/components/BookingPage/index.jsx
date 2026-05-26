@@ -7,104 +7,114 @@ const BookingPage=()=>{
 
 const navigate=useNavigate()
 
-const basePrice=5000
-
-const [tripType,setTripType]=useState(
-'oneway'
+const tripData=
+JSON.parse(
+localStorage.getItem(
+'bookingData'
 )
-
-const [travelers,setTravelers]=useState(1)
+)
 
 const [name,setName]=useState('')
+const [tripType,setTripType]=useState('One Way')
 
-const calculateTotal=()=>{
+const [adults,setAdults]=useState(1)
 
-let total=
-basePrice*travelers
+const [children,setChildren]=useState(0)
 
-if(
-tripType==='roundtrip'
-){
-total=total*2
-}
+const basePrice=
+tripData?.price || 0
 
-return total
-}
+const totalAmount=
 
-const submitForm=e=>{
+(basePrice*adults)+
+((basePrice/2)*children)+
+(tripType==='Round Trip'
+?basePrice:0)
 
-e.preventDefault()
+const proceedPayment=()=>{
 
-navigate(
-'/payment',
-{
-state:{
-name,
-travelers,
+const bookingDetails={
+
+...tripData,
+
+customerName:name,
+adults,
+children,
 tripType,
-amount:
-calculateTotal()
+amount:totalAmount
+
 }
-}
+
+localStorage.setItem(
+'bookingData',
+JSON.stringify(
+bookingDetails
 )
+)
+
+navigate('/payment')
+
 }
 
 return(
 
 <div className="booking-page">
 
-<div className="booking-overlay">
-
-<form
-className="booking-card"
-onSubmit={submitForm}
->
+<div className="booking-card">
 
 <h1>
+
 Book Your Trip
+
 </h1>
 
-<p>
-Complete your details
-</p>
+<h2>
+
+{tripData?.name}
+
+</h2>
+
+<h3>
+
+Base Price:
+
+₹{basePrice}
+
+</h3>
 
 <input
+
 placeholder="Full Name"
+
 value={name}
-onChange={e=>
+
+onChange={(e)=>
 setName(
 e.target.value
 )
 }
-required
-/>
 
-<input
-placeholder="Email"
-required
-/>
-
-<input
-placeholder="Phone"
-required
 />
 
 <select
+
 value={tripType}
-onChange={e=>
+
+onChange={(e)=>
 setTripType(
 e.target.value
 )
 }
+
 >
 
-<option value="oneway">
+<option>
 
 One Way
 
 </option>
 
-<option value="roundtrip">
+<option>
 
 Round Trip
 
@@ -112,32 +122,73 @@ Round Trip
 
 </select>
 
+<label>
+
+Adults
+
+</label>
+
 <input
+
 type="number"
-value={travelers}
-onChange={e=>
-setTravelers(
+
+min="1"
+
+value={adults}
+
+onChange={(e)=>
+setAdults(
+Number(
 e.target.value
 )
+)
 }
+
 />
 
-<div className="price-box">
+<label>
+
+Children
+
+</label>
+
+<input
+
+type="number"
+
+min="0"
+
+value={children}
+
+onChange={(e)=>
+setChildren(
+Number(
+e.target.value
+)
+)
+}
+
+/>
 
 <h2>
+
 Total:
-₹{calculateTotal()}
+
+₹{totalAmount}
+
 </h2>
 
-</div>
+<button
 
-<button type="submit">
+onClick={
+proceedPayment
+}
+
+>
 
 Proceed To Payment
 
 </button>
-
-</form>
 
 </div>
 

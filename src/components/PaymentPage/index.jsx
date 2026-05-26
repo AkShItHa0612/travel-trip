@@ -9,33 +9,33 @@ const navigate = useNavigate()
 const tripData =
 JSON.parse(
 localStorage.getItem(
-"bookingData"
+'bookingData'
 )
 )
 
 const transportData =
 JSON.parse(
 localStorage.getItem(
-"transportBooking"
+'transportBooking'
 )
 )
 
 const booking =
-tripData || transportData
+tripData || transportData || {}
 
 const amount =
-booking?.amount ||
-booking?.price ||
+booking.amount ||
+booking.price ||
 0
 
-const paymentSuccess = () => {
+const paymentSuccess=()=>{
 
 localStorage.removeItem(
-"bookingData"
+'bookingData'
 )
 
 localStorage.removeItem(
-"transportBooking"
+'transportBooking'
 )
 
 navigate('/success')
@@ -54,8 +54,7 @@ Payment
 
 <h2>
 
-Total Amount:
-₹{amount}
+Total Amount: ₹{amount}
 
 </h2>
 
@@ -64,9 +63,7 @@ Total Amount:
 transportData ? (
 
 <div
-style={{
-marginBottom:'20px'
-}}
+className="booking-info"
 >
 
 <p>
@@ -75,8 +72,11 @@ marginBottom:'20px'
 Route:
 </b>
 
+{' '}
 {booking.from}
-{" → "}
+
+{' → '}
+
 {booking.to}
 
 </p>
@@ -87,6 +87,8 @@ Route:
 Transport:
 </b>
 
+{' '}
+
 {booking.type}
 
 </p>
@@ -96,6 +98,8 @@ Transport:
 <b>
 Duration:
 </b>
+
+{' '}
 
 {booking.duration}
 
@@ -111,7 +115,8 @@ booking.travelAssistance && (
 Travel Assistance:
 </b>
 
-Yes
+{' '}
+Yes ✔
 
 </p>
 
@@ -128,16 +133,30 @@ Yes
 (
 
 <div
-style={{
-marginBottom:'20px',
-fontWeight:'600',
-color:'#810B38'
-}}
+className="booking-info"
 >
 
 <p>
 
-Package Booking
+<b>
+Package:
+</b>
+
+{' '}
+
+{booking.name}
+
+</p>
+
+<p>
+
+<b>
+Price:
+</b>
+
+{' '}
+
+₹{booking.price}
 
 </p>
 
@@ -175,4 +194,4 @@ Pay ₹{amount}
 
 }
 
-export default PaymentPage  
+export default PaymentPage

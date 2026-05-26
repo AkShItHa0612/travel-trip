@@ -35,13 +35,13 @@ const bookTrip=()=>{
 
 localStorage.setItem(
 
-"bookingData",
+'bookingData',
 
 JSON.stringify(selected)
 
 )
 
-navigate('/success')
+navigate('/booking')
 
 }
 
